@@ -1,7 +1,7 @@
 class Solution {
 public:
     string frequencySort(string s) {
-        unordered_map<char,int>mpp;
+        vector<int>mpp(128);
 
         for(int i=0;i<s.size();i++)
         {
@@ -10,11 +10,15 @@ public:
 
         priority_queue<pair<int,char>>pq;
 
-        for(auto it =mpp.begin();it!=mpp.end();++it)
+        for(int i=0;i<127;i++)
         {
-            char c=it->first;
-            int  v=it->second;
-            pq.push({v,c});
+            char c=i;
+            int  v=mpp[i];
+            if(v!=0)
+            {
+                pq.push({v,c});
+            }
+            
         }
         string ans="";
 
