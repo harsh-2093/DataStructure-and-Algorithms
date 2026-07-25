@@ -2,51 +2,71 @@ class Solution {
 public:
     bool isNStraightHand(vector<int>& hand, int groupSize) {
         if(hand.size()%groupSize!=0)return false;
-        map<int,int>mpp;
+        unordered_map<int,int>mpp;
         //{value,freq}:
+        priority_queue<int ,vector<int>,greater<int>>pq;
 
         for(int d:hand)
         {
             mpp[d]++;
         }
+
+        auto it=mpp.begin();
+        while(it!=mpp.end())
+        {
+            pq.push(it->first);
+            ++it;
+        }
+
         int ans=0;
 
-       
-        while(!mpp.empty())
+        while(!pq.empty())
         {
-            auto it=mpp.begin();
+            vector<int>val;
+            
             int cnt=0;
             int prev=-1;
-            while(it!=mpp.end())
+            while(!pq.empty())
             {
-                if(cnt==groupSize)break;
-                if(it->second==0)
+                if(cnt==groupSize)
                 {
-                    mpp.erase(it);
                     break;
                 }
 
                 if(prev==-1)
                 {
-                    if(it->second>0)
+                    prev=pq.top();
+                    mpp[prev]--;
+                    if(mpp[prev]!=0)
                     {
-                        prev=it->first;
+                        val.push_back(prev);
+                    }
+                    cnt++;
+                }
+                else
+                {
+                    if(pq.top()==prev+1)
+                    {
+                        mpp[pq.top()]--;
+                        if(mpp[pq.top()]!=0)
+                        {
+                            val.push_back(pq.top());
+                        }
                         cnt++;
-                        it->second--;
+                        prev=pq.top();
                     }
                 }
-                else if(it->first==prev+1 &&it->second>0)
+                pq.pop();
+                if(cnt==groupSize)
                 {
-                    prev=it->first;
-                    cnt++;
-                    it->second--;
+                    ans++;
                 }
-                ++it;
+
             }
-            if(cnt==groupSize)
-            {
-                ans++;
-            }
+                            for(int d:val)
+                {
+                     pq.push(d);
+                }
         }
 
         if(ans==hand.size()/groupSize)return true;
