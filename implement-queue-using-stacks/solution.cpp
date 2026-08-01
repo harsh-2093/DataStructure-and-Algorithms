@@ -13,48 +13,48 @@ public:
     }
     
     int pop() {
-
-        if(st.empty())
+        if(helper.empty())
+        {
+            while(!st.empty())
+            {
+                helper.push(st.top());
+                st.pop();
+            }
+        }
+        if(helper.empty())
         {
             return -1;
         }
-        while(!st.empty())
+        else
         {
-            helper.push(st.top());
-            st.pop();
-        }
-        int Val=helper.top();
-        helper.pop();
-        while(!helper.empty())
-        {
-            st.push(helper.top());
+            int val=helper.top();
             helper.pop();
+            return val;
         }
-        return Val;
     }
     
     int peek() {
-        if(st.empty())
+        if(helper.empty())
+        {
+            while(!st.empty())
+            {
+                helper.push(st.top());
+                st.pop();
+            }
+        }
+        if(helper.empty())
         {
             return -1;
         }
-        while(!st.empty())
+        else
         {
-            helper.push(st.top());
-            st.pop();
+            return helper.top();
         }
-        int Val=helper.top();
-        while(!helper.empty())
-        {
-            st.push(helper.top());
-            helper.pop();
-        }
-        return Val;
     }
 
     
     bool empty() {
-        if(st.empty())
+        if(st.empty()&& helper.empty())
         {
             return true;
         }
