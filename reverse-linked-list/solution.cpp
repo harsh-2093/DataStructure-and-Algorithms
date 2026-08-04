@@ -19,12 +19,8 @@ public:
             return head;
         }
         ListNode* head=rvrs(temp->next);
-        ListNode*node=head;
-
-        while(node->next!=nullptr)
-        {
-            node=node->next;
-        }
+        ListNode*node=temp->next;
+        
         node->next=temp;
         temp->next=nullptr;
         
