@@ -1,23 +1,29 @@
 class Solution {
 public:
     vector<int> findMissingElements(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        vector<int>ans;
+        int start=INT_MAX;
+        int end=INT_MIN;
 
-        int start=nums[0];
-        int end=nums[nums.size()-1];
-        int i=0;
-        while(start!=end)
+        for(int d:nums)
         {
-            if(start==nums[i])
+            start=min(start,d);
+            end=max(end,d);
+        }
+
+        vector<int>mpp(end-start+1,0);
+
+        for(int i=0;i<nums.size();i++)
+        {
+            mpp[nums[i]-start]++;
+        }
+
+        vector<int>ans;
+        for(int i=0;i<mpp.size();i++)
+        {
+            if(mpp[i]==0)
             {
-                i++;
+                ans.push_back(i+start);
             }
-            else
-            {
-                ans.push_back(start);
-            }
-            start++;
         }
         return ans;
     }
