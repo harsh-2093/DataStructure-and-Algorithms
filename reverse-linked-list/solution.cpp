@@ -12,7 +12,7 @@ class Solution {
 public:
     ListNode* rvrs(ListNode*temp)
     {
-        if(temp==nullptr)return nullptr;
+        // if(temp==nullptr)return nullptr;
         if(temp->next==nullptr)
         {
            ListNode* head=temp;
@@ -20,7 +20,7 @@ public:
         }
         ListNode* head=rvrs(temp->next);
         ListNode*node=temp->next;
-        
+
         node->next=temp;
         temp->next=nullptr;
         
@@ -28,6 +28,7 @@ public:
 
     }
     ListNode* reverseList(ListNode* head) {
+        if(head==nullptr)return nullptr;
         return rvrs(head);
     }
 };
