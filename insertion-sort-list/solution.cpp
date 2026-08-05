@@ -11,24 +11,32 @@
 class Solution {
 public:
     ListNode* insertionSortList(ListNode* head) {
-        if(head==nullptr || head->next==nullptr)return head;
-
-        ListNode*dummy=new ListNode(0);
+        ListNode* dummy=new ListNode();
         ListNode* curr=head;
 
-            while(curr!=nullptr){
-
+        while(curr!=nullptr)
+        {
             ListNode* nextNode=curr->next;
-            ListNode* prev=dummy;
 
-            while(prev->next!=nullptr&&prev->next->val<curr->val)
+            if(dummy->next==nullptr)
             {
-                prev=prev->next;
+                dummy->next=curr;
+                curr->next=nullptr;
             }
-            curr->next=prev->next;
-            prev->next=curr;
+            else
+            {
+                ListNode* Temp=dummy;
+
+                while(Temp->next!=nullptr && Temp->next->val <= curr->val)
+                {
+                    Temp=Temp->next;
+                }
+                curr->next=Temp->next;
+                Temp->next=curr;
+            }
 
             curr=nextNode;
+            
         }
         return dummy->next;
     }
