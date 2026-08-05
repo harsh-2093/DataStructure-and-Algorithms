@@ -1,42 +1,46 @@
 class Solution {
 public:
-    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-        priority_queue<tuple<int,int,int>>pq;
+    vector<vector<int>> kSmallestPairs(vector<int>& A, vector<int>& B, int k) {
+    
+        priority_queue<
+        tuple<int,int,int>,
+        vector<tuple<int,int,int>>,
+        greater<tuple<int,int,int>>
+        >pq;
+        //pq{sum,A[i],B[j]}
 
-        //pq:{sum,nums1,nums2}:
+         vector<vector<int>>ans;
+        set<pair<int,int>>st;
+        //{A[i],B[j]}
 
-        for(int i=0;i<nums1.size();i++)
+        int i=0;
+        int j=0;
+
+        pq.push({A[i]+B[j],i,j});
+
+        
+       
+        while(k>0 && !pq.empty())
         {
-            for(int j=0;j<nums2.size();j++)
+            ans.push_back({A[get<1>(pq.top())],B[get<2>(pq.top())]});\
+            k--;
+            i=get<1>(pq.top());
+            j=get<2>(pq.top());
+            
+            if(i+1<A.size() && st.find({i+1,j})==st.end())
             {
-                int sum=nums1[i]+nums2[j];
-
-                if(pq.size()<k)
-                {
-                    pq.push({sum,nums1[i],nums2[j]});
-                }
-                else if(get<0>(pq.top())>sum)
-                {
-                    pq.pop();
-                    pq.push({sum,nums1[i],nums2[j]});
-                }
-                else
-                {
-                    break;
-                }
-                
+                pq.push({A[i+1]+B[j],i+1,j});
+                st.insert({i+1,j});
             }
-        }
-        vector<vector<int>>ans;
-        while(!pq.empty())
-        {
-            int first=get<1>(pq.top());
-            int sec=get<2>(pq.top());
-            ans.push_back({first,sec});
+            if(k>0 && j+1<B.size() && st.find({i,j+1})==st.end())
+            {
+                pq.push({A[i]+B[j+1],i,j+1});
+                st.insert({i,j+1});
+            }
             pq.pop();
         }
 
-        reverse(ans.begin(),ans.end());
         return ans;
+
     }
 };
