@@ -10,69 +10,66 @@
  */
 class Solution {
 public:
-    ListNode* Reverse(ListNode*&head)
-    {
-        ListNode*temp=head;
-        ListNode*prev=nullptr;
-        while(temp!=nullptr)
+    void attachToDummy(ListNode* new_head,ListNode*&tail)
+    { 
+        while(new_head!=nullptr)
         {
-            ListNode*front=temp->next;
-            temp->next=prev;
-            prev=temp;
-            temp=front;
+            tail->next=new_head;
+            tail=tail->next;
+            new_head=new_head->next;
         }
-        return prev;
     }
-
-    ListNode* get_k_node(ListNode*&head,int k)
+    ListNode* rvrs(ListNode*start,ListNode*end)
     {
-        ListNode*temp=head;
-        k=k-1;
-        while(k--)
+        if(start==end)
         {
-            if(temp==nullptr)
-            {
-                return nullptr;
-            }
-            temp=temp->next;
+            start->next=nullptr;
+            return start;
         }
-        return temp;
+        ListNode* head=rvrs(start->next,end);
+        start->next->next=start;
+        start->next=nullptr;
+        return head;
     }
-
     ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode* dummy=new ListNode();
+        ListNode* tail=dummy;
+
+        int cnt=k;
         ListNode*temp=head;
-        ListNode*next=nullptr;
-        ListNode*prev=nullptr;
+         ListNode* start=nullptr;
 
         while(temp!=nullptr)
         {
-            ListNode*Knode=get_k_node(temp,k);
-            if(Knode==nullptr)
+            if(cnt==k)
             {
-                if(prev!=nullptr)
-                {
-                    prev->next=temp;
-                }
-                break;
+
+                start=temp;
+                temp=temp->next;
+                cnt--;
             }
-
-            next= Knode->next;
-            Knode->next=nullptr;
-
-            Reverse(temp);
-
-            if(temp==head)
+            else if(cnt==1)
             {
-                head=Knode;
+                ListNode*end=temp;
+                ListNode*next=temp->next;
+                ListNode* new_head=rvrs(start,end);
+                attachToDummy(new_head,tail);
+                cnt=k;
+                temp=next;
+                start=temp;
             }
             else
             {
-                prev->next=Knode;
+                temp=temp->next;
+                cnt--;
             }
-            prev=temp;
-            temp=next;
         }
-        return head;
-        
+        while(start!=nullptr)
+        {
+            tail->next=start;
+            tail=tail->next;
+            start=start->next;
+        }
+        return dummy->next;
     }
 };
