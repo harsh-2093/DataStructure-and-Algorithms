@@ -1,34 +1,37 @@
 class Solution {
 public:
     vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
-        //{fraction,a[i],a[j]}
         priority_queue<
-        tuple<float,int,int>
+        tuple<double,int,int>,
+        vector<tuple<double,int,int>>,
+        greater<tuple<double,int,int>>
         >pq;
-        
 
-        for(int i=0;i<arr.size();i++)
+        int n=arr.size()-1;
+        for(int i=0;i<n;i++)
         {
-            for(int j=arr.size()-1;j>i;j--)
+            pq.push({(double)arr[i]/arr[n],i,n});
+        }
+
+        vector<vector<int>>vec;
+
+
+        while(k>0 && !pq.empty())
+        {
+            int a=arr[get<1>(pq.top())];
+            int b=arr[get<2>(pq.top())];
+            int i=get<1>(pq.top());
+            int j=get<2>(pq.top());
+            vec.push_back({a,b});
+            pq.pop();
+            k--;
+
+            if(i<j-1)
             {
-                if(pq.size()<k)
-                {
-                    pq.push({arr[i]/(float)arr[j],arr[i],arr[j]});
-                }
-                else if(pq.size()==k && get<0>(pq.top())>arr[i]/(float)arr[j])
-                {
-                  pq.pop();  
-                  pq.push({arr[i]/(float)arr[j],arr[i],arr[j]});
-                }
-                else
-                {
-                    break;
-                }
-                
+                j--;
+                pq.push({(double)arr[i]/arr[j],i,j});
             }
         }
-        int a=get<1>(pq.top());
-        int b=get<2>(pq.top());
-        return {a,b};
+        return vec.back();
     }
 };
