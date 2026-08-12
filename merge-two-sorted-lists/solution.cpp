@@ -11,44 +11,39 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode*temp1=list1;
-        ListNode*temp2=list2;
-        ListNode*newhead=new ListNode(0);
-        ListNode*newtemp=newhead;
+        ListNode* head=new ListNode();
+        ListNode* temp=head;
 
-        while(temp1!=nullptr && temp2!=nullptr)
+
+        while(list1!=nullptr && list2!=nullptr)
         {
-            if(temp1->val <temp2->val ||temp1->val==temp2->val)
+            if(list1->val<=list2->val)
             {
-                ListNode* z=new ListNode(temp1->val);
-                newtemp->next=z;
-                temp1=temp1->next;
+                head->next=list1;
 
+                list1=list1->next;
             }
-            else// (temp1->val>temp2->val)
-            {
-                ListNode*z=new ListNode(temp2->val);
-                newtemp->next=z;
-                temp2=temp2->next;
-            }
-            /*
             else
             {
-                ListNode*z=new ListNode(temp2->val);
-                newtemp->next=z;
-                temp1=temp1->next;
-                temp2=temp2->next;
-            }*/
-            newtemp=newtemp->next;
+                head->next=list2;
+                list2=list2->next;
+            }
+            head=head->next;
+
         }
-        if(temp1!=nullptr)
+        while(list1!=nullptr)
         {
-            newtemp->next=temp1;
+            head->next=list1;
+            head=head->next;
+            list1=list1->next; 
         }
-        if(temp2!=nullptr)
+        while(list2!=nullptr)
         {
-            newtemp->next=temp2;
+            head->next=list2;
+            head=head->next;
+
+            list2=list2->next; 
         }
-        return newhead->next;
+        return temp->next;
     }
 };
