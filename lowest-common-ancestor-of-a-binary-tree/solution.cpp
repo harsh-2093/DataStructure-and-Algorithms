@@ -14,7 +14,7 @@ public:
     {
         if(root==nullptr)return 0;
         int cnt=0;
-        if(root->val==p->val || root->val==q->val)
+        if(root==p || root==q)
         {
             cnt++;
         }
