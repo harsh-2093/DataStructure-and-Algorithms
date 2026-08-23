@@ -1,43 +1,55 @@
 class Solution {
 public:
     string minRemoveToMakeValid(string s) {
-        stack<int>st;
-        unordered_set<int>indx_rmv;
+        
 
+        //for extra close bracket '('
+        int open =0;
+        string ans="";
         for(int i=0;i<s.size();i++)
         {
             if(s[i]=='(')
             {
-                st.push(i);
+                open++;
             }
             else if(s[i]==')')
             {
-                if(st.empty())
+                if(open==0)
                 {
-                    indx_rmv.insert(i);
+                    continue;
                 }
                 else
                 {
-                    st.pop();
+                    open--;
                 }
             }
-        }
-        while(!st.empty())
-        {
-           indx_rmv.insert(st.top());
-           st.pop();
+            ans+=s[i];
+
         }
 
-        string ans="";
-
-        for(int i=0;i<s.size();i++)
+        int close=0;
+        string ans2="";
+        for(int i=ans.size()-1;i>=0;i--)
         {
-            if(indx_rmv.find(i)==indx_rmv.end())
+            if(ans[i]==')')
             {
-                ans+=s[i];
+                close++;
             }
-        }
-        return ans;
+            else if(ans[i]=='(')
+            {
+                if(close==0)
+                {
+                    continue;
+                }
+                else
+                {
+                    close--;
+                }
+            }
+            ans2+=ans[i];
 
+        }
+        reverse(ans2.begin(),ans2.end());
+        return ans2;
     }
 };
