@@ -1,41 +1,63 @@
 class Solution {
 public:
-    int open=0;
-    int close=0;
-    void solve(string current,int n,vector<string>&result)
-    {
-        //bc
-        if(current.size()==2*n)
+bool isValid(string s) {
+        unordered_map<char,char>mpp{
+            {'(',')'},
+            {'{','}'},
+            {'[',']'},
+        };
+        stack<char>st;
+        for(int i=0;i<s.size();i++)
         {
-            result.push_back(current);
-            return;
+            if(st.empty())
+            {
+                if(mpp.find(s[i])==mpp.end())
+                {
+                    return false;
+                }
+                st.push(s[i]);
+            }
+            else{
+            char back=st.top();
+            if(mpp[back]==s[i])
+            {
+                st.pop();
+            }
+            else
+            {
+                st.push(s[i]);
+            }
+            }
         }
 
-        //explore1
-        if(open>=close){
-        if(open<n){
-        current.push_back('(');
-        open++;
-        solve(current,n,result);
-        current.pop_back();
-        open--;
+        return st.empty();
+    }
+    vector<string>ans;
+    void solve(string curr,int n)
+    {
+        if(curr.size()==2*n)
+        {
+            if(isValid(curr))
+            {
+                ans.push_back(curr);
+
+            }
+                    return;
+
         }
 
 
-        //explore2
-        if(close<n){
-        current.push_back(')');
-        close++;
-        solve(current,n,result);
-        current.pop_back();
-        close--;
-        }
-        }
+        curr.push_back('(');
+        solve(curr,n);
+        curr.pop_back();
+
+        curr.push_back(')');
+        solve(curr,n);
+        // curr.pop_back();
 
     }
     vector<string> generateParenthesis(int n) {
-        vector<string>result;
-        solve("",n,result);
-        return result;
+        solve("",n);
+        return ans;
     }
 };
