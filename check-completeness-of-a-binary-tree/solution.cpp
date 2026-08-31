@@ -11,36 +11,26 @@
  */
 class Solution {
 public:
+    int countNode(TreeNode* root)
+    {
+        if(root==nullptr)return 0;
+
+        int left=countNode(root->left);
+        int right=countNode(root->right);
+
+        return 1+left+right;
+    }
+    bool solve(TreeNode* root,int index,int totalNodes)
+    {
+        if(root==nullptr)return true;
+        if(index>totalNodes)return false;
+        bool left=solve(root->left,2*index,totalNodes);
+        bool right=solve(root->right,2*index+1,totalNodes);
+
+        return left && right ;
+    }
     bool isCompleteTree(TreeNode* root) {
-        queue<TreeNode*>q;
-        q.push(root);
-
-         int flag=0;
-        while(q.size()>0)
-        {
-            // vector<int>temp;
-            int n=q.size();
-           
-            for(int i=0;i<n;i++)
-            {
-                TreeNode* curr=q.front();
-                q.pop();
-                if(curr==nullptr)
-                {
-                    flag=1;
-                }
-                if(flag==1 && curr!=nullptr)
-                {
-                    return false;
-                }
-                if(curr!=nullptr)
-                {
-                    q.push(curr->left);
-                    q.push(curr->right);       
-                }
-
-            }
-        }
-        return true;
+        int totalNodes=countNode(root);
+        return solve(root,1,totalNodes);
     }
 };
