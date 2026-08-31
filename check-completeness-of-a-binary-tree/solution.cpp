@@ -23,14 +23,14 @@ public:
     bool solve(TreeNode* root,int index,int totalNodes)
     {
         if(root==nullptr)return true;
-        if(index>totalNodes)return false;
-        bool left=solve(root->left,2*index,totalNodes);
-        bool right=solve(root->right,2*index+1,totalNodes);
+        if(index>=totalNodes)return false;
+        bool left=solve(root->left,2*index+1,totalNodes);
+        bool right=solve(root->right,2*index+2,totalNodes);
 
         return left && right ;
     }
     bool isCompleteTree(TreeNode* root) {
         int totalNodes=countNode(root);
-        return solve(root,1,totalNodes);
+        return solve(root,0,totalNodes);
     }
 };
