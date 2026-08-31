@@ -1,35 +1,32 @@
 class Solution {
 public:
-    vector<vector<int>>result;
-    void permute(int index,vector<int>& nums,vector<int>&temp,vector<int>&used)
+    vector<vector<int>>ans;
+    void solve(vector<int>& nums,vector<int>&curr,set<int>&mpp)
     {
-        //base case
-        if(temp.size()==nums.size())
+        if(curr.size()==nums.size())
         {
-            result.push_back(temp);
+            ans.push_back(curr);
             return;
         }
+
         for(int i=0;i<nums.size();i++)
         {
-            if(used[i]==1)continue;
-            temp.push_back(nums[i]);
-            used[i]=1;
-            permute(i+1,nums,temp,used);
-            temp.pop_back();
-            used[i]=0;
-            // permute(i+1,nums,temp);
-
+            if(mpp.find(i)!=mpp.end())
+            {
+                continue;
+            }
+            mpp.insert(i);
+            curr.push_back(nums[i]);
+            solve(nums,curr,mpp);
+            mpp.erase(i);
+            curr.pop_back();
 
         }
-
-
-
-
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<int>temp;
-        vector<int> used(nums.size(), 0);
-        permute(0,nums,temp,used);
-        return result;
+        set<int>mpp;
+        vector<int>curr;
+        solve(nums,curr,mpp);
+        return ans;
     }
 };
