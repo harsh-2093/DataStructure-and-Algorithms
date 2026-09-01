@@ -1,0 +1,7 @@
+# Write your MySQL query statement below
+select class 
+from (
+    select class,count(student) as no_student
+    from Courses
+    group by class) as temp
+where no_student>=5;
