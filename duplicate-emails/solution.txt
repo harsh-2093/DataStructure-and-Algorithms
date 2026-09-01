@@ -1,0 +1,8 @@
+# Write your MySQL query statement below
+select email
+from(
+    select email,count(id) as no_mail
+    from person
+    group by email
+)as temp
+where no_mail>1;
