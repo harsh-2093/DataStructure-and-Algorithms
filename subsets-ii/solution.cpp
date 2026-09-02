@@ -1,34 +1,27 @@
 class Solution {
 public:
-    set<vector<int>>result;
-    void solve(int index,vector<int>& nums,vector<int>&temp,vector<bool>&used)
-    {
-        result.insert(temp);
-
-        if(temp.size()==nums.size()|| index==nums.size())
-        {
-            return ;
-        }
-        for(int i=index;i<nums.size();i++){
-            if(used[i]==true)continue;
-            temp.push_back(nums[i]);
-            used[i]=true;
-            solve(i+1,nums,temp,used);
-            temp.pop_back();
-            used[i]=false;
-            }
-
-
-
-
-
-    }
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         sort(nums.begin(),nums.end());
-        vector<int>temp;
-        vector<bool>used(nums.size(),false);
-        solve(0,nums,temp,used);
-        vector<vector<int>>res(result.begin(),result.end());
-        return res;
+        vector<vector<int>>powerset;
+        vector<int>partial;
+        dfs(nums,0,partial,powerset);
+        return powerset;
+
+    }
+private:
+    void dfs(vector<int>& nums,int i,vector<int>&partial,vector<vector<int>>&powerset)
+    {
+        if(i==nums.size())powerset.push_back(partial);
+        else
+        {
+            int val=nums[i];
+            int k=1;
+            while(i+k<nums.size() && nums[i+k]==val)k++;
+            dfs(nums,i+k,partial,powerset);
+
+            partial.push_back(nums[i]);
+            dfs(nums,i+1,partial,powerset);
+            partial.pop_back();
+        }
     }
 };
