@@ -1,24 +1,24 @@
 class Solution {
 public:
-    //head recusrion using math induction
-    
-    vector<vector<int>> subsets(vector<int>& nums) {
-        //
-        if(nums.size()==0)return{{}};
-
-        int last_element=nums.back();
-        nums.pop_back();
-        vector<vector<int>>s1= subsets(nums);
-
-        vector<vector<int>>s2;
-        for(vector<int>subset:s1)
+    vector<vector<int>>ans;
+    void solve(vector<int>& nums,int index,vector<int>&curr)
+    {
+        if(index==nums.size())
         {
-            subset.push_back(last_element);
-            s2.push_back(subset);
+            ans.push_back(curr);
+            return;
         }
 
-        vector<vector<int>>powerset=s1;
-        powerset.insert(powerset.end(),s2.begin(),s2.end());
-        return powerset;
+        //take it
+        curr.push_back(nums[index]);
+        solve(nums,index+1,curr);
+        curr.pop_back();
+
+        solve(nums,index+1,curr);
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int>curr;
+        solve(nums,0,curr);
+        return ans;
     }
 };
