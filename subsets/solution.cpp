@@ -8,13 +8,14 @@ public:
             ans.push_back(curr);
             return;
         }
-
+        //not take
+        solve(nums,index+1,curr);
         //take it
         curr.push_back(nums[index]);
         solve(nums,index+1,curr);
         curr.pop_back();
 
-        solve(nums,index+1,curr);
+       
     }
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<int>curr;
