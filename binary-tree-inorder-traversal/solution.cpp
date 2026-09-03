@@ -12,17 +12,32 @@
 class Solution {
 public:
     vector<int>ans;
-    void solve(TreeNode* root)
-    {
-        if(root==nullptr)return;
-
-        solve(root->left);
-        ans.push_back(root->val);
-        solve(root->right);
-    }
     vector<int> inorderTraversal(TreeNode* root) {
-        if(root==nullptr)return {};
-        solve(root);
+        TreeNode* curr=root;
+
+        while(curr!=nullptr)
+        {
+            if(curr->left==nullptr)
+            {
+                ans.push_back(curr->val);
+                curr=curr->right;
+            }
+            else
+            {
+                TreeNode* prev=curr->left;
+
+                while(prev->right!=nullptr)
+                {
+                    prev=prev->right;
+                }
+                prev->right=curr;
+
+                //break the curr left link
+                TreeNode* temp=curr;
+                curr=curr->left;
+                temp->left=nullptr;
+            }
+        }
         return ans;
     }
 };
