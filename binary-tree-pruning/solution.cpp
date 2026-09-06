@@ -11,38 +11,32 @@
  */
 class Solution {
 public:
-    bool ispresent(TreeNode* root)
+    bool isvalid(TreeNode* root)
     {
-        if(root==nullptr)
-        {
-            return false;
-        }
-        if(root->val==1)return true;
-        bool left=ispresent(root->left);
-        bool right=ispresent(root->right);
+        if(root==nullptr)return false;
 
-        return left || right;
+        bool  left=isvalid(root->left);
+        bool right=isvalid(root->right);
+
+        if(root->val==1)return true;
+
+        return (left|| right);
     }
     TreeNode* pruneTree(TreeNode* root) {
-        
         if(root==nullptr)return nullptr;
-
-        if(!ispresent(root->left))
+        if(!isvalid(root->left))
         {
             root->left=nullptr;
         }
-
-        if(!ispresent(root->right))
+        if(!isvalid(root->right))
         {
-            root->right=nullptr;
+            root->right= nullptr;
         }
+
         pruneTree(root->left);
         pruneTree(root->right);
-        if(!ispresent(root->left)&& !ispresent(root->right)&& root->val==0)
-        {
-            return nullptr;
-        }
-        return root;
 
+        if(!isvalid(root->left)&& !isvalid(root->right) &&root->val==0)return nullptr;
+        return root;
     }
 };
