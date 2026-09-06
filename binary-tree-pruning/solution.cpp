@@ -14,10 +14,12 @@ public:
     TreeNode* pruneTree(TreeNode* root) {
         if(root==nullptr)return nullptr;
 
-        root->left=pruneTree(root->left);
-        root->right=pruneTree(root->right);
+        TreeNode* left=pruneTree(root->left);
+        TreeNode* right=pruneTree(root->right);
+        root->left=left;
+        root->right=right;
 
-        if(root->left==nullptr && root->right==nullptr && root->val==0)
+        if(left==nullptr && right==nullptr && root->val==0)
         return nullptr;
 
         return root;
