@@ -1,11 +1,11 @@
 class Solution {
 public:
-    set<string>ans;
+    int ans;
     void solve(string tiles,int index,string curr,set<int>&freq)
     {
-                if(!curr.empty())
+        if(!curr.empty())
         {
-            ans.insert(curr);
+            ans++;
         }
         if(curr.size()==tiles.size())return;
 
@@ -13,7 +13,9 @@ public:
 
         for(int i=0;i<tiles.size();i++)
         {
-            if(freq.find(i)!=freq.end())continue;
+            if(i>0 && tiles[i]==tiles[i-1]&&freq.find(i-1)==freq.end() )continue;
+            if(freq.find(i) != freq.end())
+    continue;
 
             freq.insert(i);
             curr+=tiles[i];
@@ -25,8 +27,9 @@ public:
         
     }
     int numTilePossibilities(string tiles) {
+        sort(tiles.begin(),tiles.end());
         set<int>freq;
        solve(tiles,0,"",freq);
-       return ans.size();
+       return ans;
     }
 };
