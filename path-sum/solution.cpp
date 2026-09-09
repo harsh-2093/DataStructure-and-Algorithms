@@ -12,7 +12,7 @@
 class Solution {
 public:
     bool result=false;
-    void solve(TreeNode* root,int targetSum,int sum)
+    void solve(TreeNode* root,int targetSum,int& sum)
     {
         if(root==nullptr)return;
         sum+=root->val;
@@ -23,15 +23,18 @@ public:
                 result=true;
 
             }
+            sum-=root->val;
             return;
         }
 
         solve(root->left,targetSum,sum);
         solve(root->right,targetSum,sum);
+        sum-=root->val;
 
     }
     bool hasPathSum(TreeNode* root, int targetSum) {
-        solve(root,targetSum,0);
+        int sum=0;
+        solve(root,targetSum,sum);
         return result;
     }
 };
