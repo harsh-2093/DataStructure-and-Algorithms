@@ -28,6 +28,7 @@ public:
                 TreeNode* node2=new TreeNode(val);
                 root->right=node2;
                 node2->right=prev_right;
+                return root;
 
         }
         root->left=addroot(root->left,curr+1,val,depth);
