@@ -45,8 +45,6 @@ public:
                     curr->right=node2;
                     node2->right=prev_right;
                     q.push(node2);
-                    
-
                 }
                 else
                 {
