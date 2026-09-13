@@ -10,32 +10,7 @@
  * };
  */
 class Solution {
-public: 
-    TreeNode* addroot(TreeNode* root,int curr, int val, int depth)
-    {
-        if(root==nullptr)return nullptr;
-
-        if(curr==depth-1)
-        {
-            TreeNode* prev_left=root->left;
-            TreeNode* prev_right=root->right;
-
-                TreeNode* node=new TreeNode(val);
-                root->left=node;
-                node->left=prev_left;
-            
-
-                TreeNode* node2=new TreeNode(val);
-                root->right=node2;
-                node2->right=prev_right;
-                return root;
-
-        }
-        root->left=addroot(root->left,curr+1,val,depth);
-        root->right=addroot(root->right,curr+1,val,depth);
-
-        return root;
-    }
+public:
     TreeNode* addOneRow(TreeNode* root, int val, int depth) {
         if(depth==1)
         {
@@ -43,9 +18,53 @@ public:
             node->left=root;
             return node;
         }
+        queue<TreeNode*>q;
+        q.push(root);
+        int idx=0;
 
-        int curr=1;
-        addroot(root,curr,val,depth);
+        while(q.size()>0)
+        {
+            idx++;
+            int n=q.size();
+            for(int i=0;i<n;i++)
+            {
+                TreeNode* curr=q.front();
+                q.pop();
+
+                if(idx==depth-1)
+                {
+                    TreeNode* prev_left=curr->left;
+                    TreeNode* prev_right=curr->right;
+
+                    TreeNode* node=new TreeNode(val);
+                    curr->left=node;
+                    node->left=prev_left;
+                    q.push(node);
+        
+                    TreeNode* node2=new TreeNode(val);
+                    curr->right=node2;
+                    node2->right=prev_right;
+                    q.push(node2);
+                    
+
+                }
+                else
+                {
+                    if(curr->left!=nullptr)
+                    {
+                        q.push(curr->left);
+                    }
+                    if(curr->right!=nullptr)
+                    {
+                        q.push(curr->right);
+                    }
+                }
+
+
+            }
+
+        }
         return root;
+
     }
 };
