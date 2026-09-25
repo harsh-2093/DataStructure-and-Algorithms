@@ -11,65 +11,20 @@
  */
 class Solution {
 public:
-    bool ispalindrome(vector<int>&temp)
-    {
-        int left=0;
-        int right=temp.size()-1;
-        while(left<=right)
-        {
-            if(temp[left]!=temp[right])
-            {
-                return false;
-            }
-            left++;
-            right--;
-        }
-        return true;
+    bool isSameTree(TreeNode* a, TreeNode* b) {
+        if(a==nullptr && b==nullptr)return true;
+        if(a==nullptr && b!=nullptr)return false;
+        if(a!=nullptr && b==nullptr)return false;
+
+        bool left=isSameTree(a->left,b->right);
+        bool right=isSameTree(a->right,b->left);
+        
+        if(a->val!=b->val)return false;
+
+        return left && right;
+
     }
     bool isSymmetric(TreeNode* root) {
-        if(root==NULL)return{};
-        queue<TreeNode*>q;
-        q.push(root);
-
-        while(q.size()>0)
-        {
-            vector<int>temp;
-            int n=q.size();
-            for(int i=0;i<n;i++)
-            {
-                TreeNode* curr=q.front();
-                q.pop();
-                if(curr==nullptr)
-                {
-                    temp.push_back(-101);
-                    continue;
-                }
-                temp.push_back(curr->val);
-                
-                if(curr->left!=nullptr)
-                {
-                    q.push(curr->left);
-                }
-                else{
-                    q.push(nullptr);
-                }
-                if(curr->right!=nullptr)
-                {
-                    q.push(curr->right);
-                }
-                else
-                {
-                    q.push(nullptr);
-                }
-
-            }
-            if(ispalindrome(temp)==false)
-            {
-                return false;
-            }
-
-        }
-        return true;
-
+        return isSameTree(root->left,root->right);
     }
 };
