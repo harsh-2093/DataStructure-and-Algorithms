@@ -11,39 +11,35 @@
  */
 class Solution {
 public:
-    void bfs(queue<TreeNode*>&q,vector<int>&result)
+    void dfs(TreeNode* root, map<int,int>&mpp,int level)
     {
-        while(q.size()>0)
+        if(root==nullptr)return;
+
+        if(mpp.find(level)==mpp.end())
         {
-            int n=q.size();
-            int max_val=INT_MIN;
-            for(int i=0;i<n;i++)
-            {
-                TreeNode* curr=q.front();
-                q.pop();
-                if(curr->val>max_val)
-                {
-                    max_val=curr->val;
-                }
-                if(curr->left!=nullptr)
-                {
-                    q.push(curr->left);
-                }
-                if(curr->right!=nullptr)
-                {
-                    q.push(curr->right);
-                }
-            }
-            result.push_back(max_val);
+            mpp[level]=root->val;
         }
+        else
+        {
+            if(root->val>mpp[level])
+            {
+                mpp[level]=root->val;
+            }
+        }
+
+        dfs(root->left,mpp,level+1);
+        dfs(root->right,mpp,level+1);
     }
     vector<int> largestValues(TreeNode* root) {
-        if(root==nullptr)return {};
+        map<int,int>mpp;
+        dfs(root,mpp,0);
         vector<int>result;
-        queue<TreeNode*>q;
-
-        q.push(root);
-        bfs(q,result);
+        auto it=mpp.begin();
+        while(it!=mpp.end())
+        {
+            result.push_back(it->second);
+            ++it;
+        }
         return result;
     }
 };
