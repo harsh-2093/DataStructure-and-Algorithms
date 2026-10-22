@@ -11,32 +11,28 @@
  */
 class Solution {
 public:
-    int findBottomLeftValue(TreeNode* root) {
-        queue<TreeNode*>q;
-        q.push(root);
-        int ans=0;
-        while(q.size()>0)
-        {
-            int n=q.size();
-            vector<int>temp;
-            for(int i=0;i<n;i++)
+    int ans=1;
+    int  max_level=0;
+
+    void dfs(TreeNode* root,int level)
+    {
+        if(root==nullptr)return;
+
+        if(root->left==nullptr && root->right==nullptr){
+            if(level>max_level)
             {
-                TreeNode* curr=q.front();
-                q.pop();
-                temp.push_back(curr->val);
-                if(curr->left!=nullptr)
-                {
-                    q.push(curr->left);
-
-                }
-                if(curr->right!=nullptr)
-                {
-                    q.push(curr->right);
-                }
-
+                ans=root->val;
+                max_level=level;
             }
-            ans=temp[0];
         }
+
+        dfs(root->left,level+1);
+        dfs(root->right,level+1);
+
+    }
+    int findBottomLeftValue(TreeNode* root) {
+        if(root->left==nullptr && root->right==nullptr)return root->val;
+        dfs(root,0);
         return ans;
     }
 };
