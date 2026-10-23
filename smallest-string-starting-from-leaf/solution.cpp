@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    set<string>ans;
+    string ans="{";
     void dfs(TreeNode* root,string current)
     {
         if(root==nullptr)return;
@@ -19,7 +19,10 @@ public:
         if(root->left==nullptr && root->right==nullptr)
         {
             reverse(current.begin(),current.end());
-            ans.insert(current);
+            if(current<ans)
+            {
+                ans=current;
+            }
             cout<<current<<endl;
             return;
         }
@@ -28,10 +31,10 @@ public:
     }
     string smallestFromLeaf(TreeNode* root) {
         dfs(root,"");
-        for(string i:ans)
-        {
-            return i;
-        }
-        return "";
+        // for(string i:ans)
+        // {
+        //     return i;
+        // }
+        return ans;
     }
 };
