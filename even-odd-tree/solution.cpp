@@ -11,42 +11,56 @@
  */
 class Solution {
 public:
-    bool isEvenOddTree(TreeNode* root) {
-        queue<TreeNode*>q;
-        q.push(root);
-        int level=0;
+    bool even_odd=true;
+    int height(TreeNode* root)
+    {
+        if(root==nullptr)return 0;
 
-        while(q.size()>0)
+        int l_max=height(root->left);
+        int r_max=height(root->right);
+        return (max(l_max,r_max)+1);
+    }
+    void dfs(TreeNode* root, vector<int>&mpp,int level)
+    {
+        if(root==nullptr)return;
+
+        if(level%2==0)
         {
-            int n=q.size();
-            int prev_odd=INT_MAX;
-            int prev_even=INT_MIN;
-
-            for(int i=0;i<n;i++)
+            if(root->val%2==0 ||mpp[level]>=root->val)
             {
-                TreeNode* curr=q.front();
-                q.pop();
-                if(level%2==0)
-                {
-                    if(curr->val%2==0 || curr->val<=prev_even)return false;
-                    prev_even=curr->val;
-                }
-                else
-                {
-                    if(curr->val%2!=0 || curr->val>=prev_odd)return false;
-                    prev_odd=curr->val;
-                }
-                if(curr->left!=nullptr)
-                {
-                    q.push(curr->left);
-                }
-                if(curr->right!=nullptr)
-                {
-                    q.push(curr->right);
-                }
+                even_odd=false;
             }
-            level++;
+            mpp[level]=root->val;
         }
-        return true;
+        else
+        {
+            if(root->val%2!=0 ||mpp[level]<=root->val)
+            {
+                even_odd=false;
+            }
+            mpp[level]=root->val;
+        }
+        dfs(root->left,mpp,level+1);
+        dfs(root->right,mpp,level+1);
+    }
+
+    bool isEvenOddTree(TreeNode* root) {
+        int n=height(root);
+        vector<int>mpp(n,0);
+        for(int i=0;i<n;i++)
+        {
+            if(i%2==0)
+            {
+                mpp[i]=INT_MIN;
+            }
+            else
+            {
+                mpp[i]=INT_MAX
+                ;
+            }
+        }
+        dfs(root,mpp,0);
+        return even_odd;
+
     }
 };
