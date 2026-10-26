@@ -1,13 +1,17 @@
 class Solution {
 public:
-    int dfs(int n)
-    {
-        if(n==0)return 0;
-        if(n==1) return 1;
-
-        return dfs(n-1)+dfs(n-2);
-    }
+    //bottom up approach
     int fib(int n) {
-        return dfs(n);
+        if(n<1)return 0;
+        vector<int>vis(n+1,-1);
+        vis[0]=0;
+        vis[1]=1;
+
+        for(int i=2;i<=n;i++)
+        {
+            vis[i]=vis[i-1]+vis[i-2];
+        }
+        return vis[n];
+
     }
 };
