@@ -15,16 +15,18 @@ public:
     }
     int climbStairs(int n) {
         if(n<=2)return n;
-        vector<int>stair(n+1);
-        stair[0]=0;
-        stair[1]=1;
-        stair[2]=2;
+        int a=1;
+        int b=2;
+        int c=3;
 
         for(int i=3;i<=n;i++)
         {
-            stair[i]=stair[i-1]+stair[i-2];
+            c=b+a;
+            a=b;
+            b=c;
+
         }
-        return stair[n];
+        return c;
         // return ans;
     }
 };
