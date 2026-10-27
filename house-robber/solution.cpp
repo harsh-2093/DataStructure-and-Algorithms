@@ -1,21 +1,20 @@
 class Solution {
 public:
-    int  dfs(vector<int>& nums,int index, vector<int>&mem)
-    {
-        if(index>=nums.size())
-        {
-            return 0;
-        }
-        if(mem[index]!=-1)return mem[index];
-
-        int steal=nums[index]+dfs(nums,index+2,mem);
-        int skip=dfs(nums,index+1,mem);
-
-        return mem[index]=max(steal,skip);
-
-    }
+    //bootom up approach
     int rob(vector<int>& nums) {
-        vector<int>mem(101,-1);
-        return dfs(nums,0,mem);
+        vector<int>mem(101,0);
+        if(nums.size()==0)return 0;
+        if(nums.size()==1)return nums[0];
+        int max_money=INT_MIN;
+        mem[0]=0;
+        mem[1]=nums[0];
+        for(int i=2;i<=nums.size();i++)
+        {
+            int steal=nums[i-1]+mem[i-2];
+            int skip=mem[i-1];
+            mem[i]=max(steal,skip);
+            max_money=max(steal,skip);
+        }
+        return max_money;
     }
 };
