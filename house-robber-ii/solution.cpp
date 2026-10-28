@@ -8,27 +8,32 @@ public:
         int end=nums.size();
 
         // case1 //taking index 0
-        mem[0]=0;
-        mem[1]=nums[0];
-        mem[2]=max(mem[1],nums[1]);
+        int a=0;
+        int b=nums[0];
+        int c=max(b,nums[1]);
         for(int i=3;i<end;i++)
         {
-            int steal=nums[i-1]+mem[i-2];
-            int leave=mem[i-1];
-            mem[i]=max(steal,leave);
+            int steal=nums[i-1]+b;
+            int leave=c;
+            a=b;
+            b=c;
+            c=max(steal,leave);
+
         }
 
         //case2 ///leaving the index 0
-        mem2[0]=0;
-        mem2[1]=nums[1];
-        mem2[2]=max(mem2[1],nums[2]);
+        int a1=0;
+        int b1=nums[1];
+        int c1=max(b1,nums[2]);
         for(int i=3;i<end;i++)
         {
-            int steal=nums[i]+mem2[i-2];
-            int leave=mem2[i-1];
-            mem2[i]=max(steal,leave);
+            int steal=nums[i]+b1;
+            int leave=c1;
+            a1=b1;
+            b1=c1;
+            c1=max(steal,leave);
         }
 
-        return max(mem[end-1],mem2[end-1]);
+        return max(c,c1);
     }
 };
