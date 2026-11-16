@@ -1,5 +1,6 @@
 class Solution {
 public:
+    //dp solution +memo
     int dfs(string &s1,string &s2,int i,int j, vector<vector<int>>&dp)
     {
         if(i>=s1.size() || j>=s2.size())
