@@ -12,32 +12,31 @@
 class Solution {
 public:
     int index=0;
-    int find_indx(int value,vector<int>& inorder)
+    int findVal(int val,vector<int>& inorder)
     {
         for(int i=0;i<inorder.size();i++)
         {
-            if(inorder[i]==value)
-            {
-                return i;
-            }
+            if(inorder[i]==val)return i;
         }
         return -1;
     }
-    TreeNode* solve(int start,int end,vector<int>& preorder, vector<int>& inorder)
+    
+    TreeNode* dfs(int start,int end,vector<int>& preorder,vector<int>& inorder)
     {
         if(start>end)return nullptr;
 
         TreeNode* root=new TreeNode(preorder[index]);
-        int root_indx=find_indx(preorder[index],inorder);
         index++;
-        
-        root->left=solve(start,root_indx-1,preorder,inorder);
-        root->right=solve(root_indx+1,end,preorder,inorder);
+        int root_idx=findVal(root->val,inorder);
+
+        root->left=dfs(start,root_idx-1,preorder,inorder);
+        root->right=dfs(root_idx+1,end,preorder,inorder);
 
         return root;
-
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        return solve(0,preorder.size()-1,preorder,inorder);
+        int start=0;
+        int end=preorder.size()-1;
+        return dfs(start,end,preorder,inorder);
     }
 };
