@@ -1,53 +1,60 @@
 class Solution {
 public:
-bool Ispalindrome(string value)
-{
-    string temp=value;
-    int start=0;
-    int end=value.size()-1;
-
-    while(start<end)
+    vector<vector<string>>ans;
+    void dfs(int index,vector<string>&result,vector<vector<bool>>&dp,string &s)
     {
-        swap(temp[start],temp[end]);
-        start++;
+        if(index>=s.size())
+        {
+            ans.push_back(result);
+            return;
 
-        end--;
-    }
-    if(temp==value)return true;
-    return false;
-}
+        }
 
-void pal_part(string s, vector<string>&current,vector<vector<string>>&result,int index){
-    if(index>=s.size())
-    {
-        result.push_back(current);
-        return;
-    }
-
-    for(int i=index;i<s.size();i++)
-    {
-        string value=s.substr(index,i-index+1);
-        if(Ispalindrome(value)==0)continue;
-
-        current.push_back(value);
-        pal_part(s,current,result,i+1);
-        current.pop_back();
-
-
+        for(int i=index;i<s.size();i++)
+        {
+            if(dp[index][i]==true)
+            {
+                result.push_back(s.substr(index,i-index+1));
+                dfs(i+1,result,dp,s);
+                result.pop_back();
+            }
+        }
 
     }
-}
-
-
-
     vector<vector<string>> partition(string s) {
-        vector<vector<string>>result;
-        vector<string>current;
+        //state defn:dp[i][j]= true ie s[i:j] is palindrome
+        vector<vector<bool>>dp(s.size(),vector<bool>(s.size(),false));
 
-        pal_part(s,current,result,0);
+        //marking the s with len 1 true
+        for(int i=0;i<s.size();i++)
+        {
+            dp[i][i]=true;
+        }
 
+        //start to fill the dp top to down 
+        for(int l=2;l<=s.size();l++)// l: len of substr
+        {
+            for(int i=0;i+l-1<s.size();i++)// i: start index 
+            {
+                int j=i+l-1; //j:end index
 
-        return result;
-           }
-           
+                if(s[i]==s[j])
+                {
+                    if(l==2)
+                    dp[i][j]=true;
+                    else
+                    {
+                        dp[i][j]=dp[i+1][j-1];
+                    }
+                }
+
+            }
+        }
+
+        //
+        vector<string>result;
+        dfs(0,result,dp,s);
+        return ans;
+
+    }
 };
